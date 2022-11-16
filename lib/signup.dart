@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project/ui_view/login.dart';
-import 'package:project/ui_view/login.dart';
 
+import 'login.dart';
 class SignUp extends StatelessWidget {
   // This widget is the root of your application.
   @override

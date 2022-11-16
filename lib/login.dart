@@ -1,6 +1,7 @@
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'signup.dart';
+import 'package:warungkuy_mobile/signup.dart';
+
 // import 'package:project/ui_view/signup.dart
 
 class Login extends StatelessWidget {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:warungkuy_mobile/login.dart';
 
 void main() {
   runApp(MyApp());
@@ -9,7 +10,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: NavbarHome(),
+      home: Login(),
     );
   }
 }
@@ -20,11 +21,13 @@ class NavbarHome extends StatefulWidget {
 }
 
 class _NavbarHomeState extends State<NavbarHome> {
+
   int _selectedNavbar = 0;
 
   void _changeSelectedNavBar(int index) {
     setState(() {
       _selectedNavbar = index;
+
     });
   }
 
@@ -45,12 +48,12 @@ class _NavbarHomeState extends State<NavbarHome> {
             label: "Cari",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle_rounded),
-            label: "Tambah Warung",
+            icon: Icon(Icons.favorite),
+            label: "Favorit",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label:"Profil"
+            label:"Profil",
           ),
         ],
         currentIndex: _selectedNavbar,
