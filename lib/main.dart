@@ -1,66 +1,101 @@
 import 'package:flutter/material.dart';
-import 'package:warungkuy_mobile/login.dart';
+import 'package:warungkuy/constans.dart';
+import 'package:warungkuy/users/beranda.dart';
+import 'package:warungkuy/users/cariwarung.dart';
+import 'package:warungkuy/users/favorite.dart';
+import 'package:warungkuy/users/profile.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp ({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Login(),
+     home: LandingPage(),
     );
   }
 }
 
-class NavbarHome extends StatefulWidget {
+class LandingPage extends StatefulWidget {
+  const LandingPage ({Key? key}) : super(key: key);
   @override
-  _NavbarHomeState createState() => _NavbarHomeState();
+  State<LandingPage> createState() => _LandingPageState();
 }
 
-class _NavbarHomeState extends State<NavbarHome> {
-
-  int _selectedNavbar = 0;
-
-  void _changeSelectedNavBar(int index) {
-    setState(() {
-      _selectedNavbar = index;
-
-    });
-  }
+class _LandingPageState extends State<LandingPage> {
+  int _bottomNavCurrentIndex = 0;
+  List<Widget> _container = [
+    new Beranda(),
+    new Cariwarung(),
+    new Favorite(),
+    new Profile()
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-
-      ),
+      
+      body: _container[_bottomNavCurrentIndex],
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        selectedItemColor: Palette.bg2,
+        type: BottomNavigationBarType.fixed,
+        onTap: (index) {
+          setState(() {
+            _bottomNavCurrentIndex = index;
+          });
+        },
+        currentIndex: _bottomNavCurrentIndex,
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Beranda",
+            activeIcon: new Icon(
+              Icons.home,
+              color: Palette.bg2,
+            ),
+            icon: new Icon(
+              Icons.home,
+              color: Colors.grey,
+            ),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: "Cari",
+            activeIcon: new Icon(
+              Icons.search,
+              color: Palette.bg2,
+            ),
+            icon: new Icon(
+              Icons.search,
+              color: Colors.grey,
+            ),
+            label: 'Cari Warung',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: "Favorit",
+            activeIcon: new Icon(
+              Icons.favorite,
+              color: Palette.bg2,
+            ),
+            icon: new Icon(
+              Icons.favorite_border,
+              color: Colors.grey,
+            ),
+            label: 'Favorite',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label:"Profil",
+            activeIcon: new Icon(
+              Icons.person,
+              color: Palette.bg2,
+            ),
+            icon: new Icon(
+              Icons.person_outline,
+              color: Colors.grey,
+            ),
+            label: 'Profile',
           ),
         ],
-        currentIndex: _selectedNavbar,
-        selectedItemColor: Colors.green,
-        unselectedItemColor: Colors.black,
-        showUnselectedLabels: true,
-        onTap: _changeSelectedNavBar,
       ),
     );
   }
