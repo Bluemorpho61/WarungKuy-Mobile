@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:warungkuy/constans.dart';
+// import 'package:google_fonts/google_fonts.dart';
+import 'package:warungkuy_mobile/constans.dart';
 
 class Beranda extends StatefulWidget {
   @override
@@ -126,7 +126,7 @@ class _BerandaState extends State<Beranda> {
                               "Abah Roni",
                               "Jalan Mastrip No. 52 Jember",
                               "APLIKASI MANTAP JIWA COY ASLI GAK BOHONG",
-                              "assets/foto1.png")),
+                              "../assets/foto1.png")),
                       SizedBox(height: 30.0),
                       Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12.0),

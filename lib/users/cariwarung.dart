@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:warungkuy/constans.dart';
+import 'package:warungkuy_mobile/constans.dart';
 
 class Cariwarung extends StatefulWidget {
   @override
