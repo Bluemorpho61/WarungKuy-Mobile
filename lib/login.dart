@@ -1,5 +1,6 @@
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:warungkuy_mobile/Home.dart';
 // import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
@@ -69,9 +70,10 @@ class _LoginState extends State<Login> {
                       height: 40,
                       color: Colors.blue,
                       child: Text("Masuk"),
-                      onPressed: (){
-                        // _login();
-
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => homepage(),
+                        ));
                       })
                 ],
               ),
@@ -79,6 +81,4 @@ class _LoginState extends State<Login> {
           ),
         ));
   }
-
-
 }
