@@ -25,7 +25,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.white,
         body: SingleChildScrollView(
           physics: NeverScrollableScrollPhysics(),
           child: ConstrainedBox(
@@ -34,47 +34,100 @@ class _LoginState extends State<Login> {
                 minHeight: MediaQuery.of(context).size.width),
             child: IntrinsicHeight(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    height: 40,
-                    width: 250,
-                    color: Colors.white,
-                    child: TextFormField(
-                      controller: email,
-                      decoration: InputDecoration(
-                          hintText: "Email", border: InputBorder.none),
-                    ),
-                  ),
                   SizedBox(
-                    height: 10,
+                    height: 150,
                   ),
                   Container(
-                    padding: EdgeInsets.all(10),
-                    width: 250,
-                    height: 40,
-                    color: Colors.white,
-                    child: TextFormField(
-                      controller: password,
-                      decoration: InputDecoration(
-                          hintText: "Password", border: InputBorder.none),
+                    width: 150,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage('assets/img/warung.png'),
+                          fit: BoxFit.fill),
                     ),
                   ),
                   SizedBox(
                     height: 20,
                   ),
-                  MaterialButton(
-                      padding: EdgeInsets.all(20),
-                      minWidth: 100,
+                  Text(
+                    'Login',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 150,
+                  ),
+                  Container(
+                    height: 35,
+                    width: 260,
+                    child: TextField(
+                      // controller: usernameA,
+                      decoration: InputDecoration(
+                        labelText: "Username",
+                        prefixIcon: Icon(Icons.person),
+                        fillColor: Colors.black,
+                        border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    height: 35,
+                    width: 260,
+                    child: TextField(
+                      // controller: usernameA,
+                      decoration: InputDecoration(
+                        labelText: "Password",
+                        prefixIcon: Icon(Icons.password),
+                        fillColor: Colors.black,
+                        border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Container(
+                      width: 250,
                       height: 40,
-                      color: Colors.blue,
-                      child: Text("Masuk"),
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => homepage(),
-                        ));
-                      })
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        border: Border.all(
+                          width: 1,
+                        ),
+                        color: Color(0xFF127CBF),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 1,
+                            offset: Offset(1, 5), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: TextButton(
+                        child: Text(
+                          "Daftar",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => homepage()));
+                        },
+                      ))
                 ],
               ),
             ),
