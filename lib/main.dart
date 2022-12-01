@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:warungkuy_mobile/Home.dart';
 import 'package:warungkuy_mobile/constans.dart';
 import 'package:warungkuy_mobile/login.dart';
 import 'package:warungkuy_mobile/users/beranda.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Login(),
+      home: homepage(),
     );
   }
 }
