@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:warungkuy_mobile/constans.dart';
-import 'package:warungkuy_mobile/login.dart';
 import 'package:warungkuy_mobile/users/beranda.dart';
 import 'package:warungkuy_mobile/users/cariwarung.dart';
 import 'package:warungkuy_mobile/users/favorite.dart';
@@ -18,7 +17,7 @@ class _homepageState extends State<homepage> {
     new Beranda(),
     new Cariwarung(),
     new Favorite(),
-    new profile()
+    new Profile()
   ];
 
   @override
@@ -84,3 +83,4 @@ class _homepageState extends State<homepage> {
     );
   }
 }
+
