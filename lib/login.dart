@@ -12,11 +12,12 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final TextEditingController _emailController = TextEditingController(text: ""),
+  final TextEditingController _emailController =
+          TextEditingController(text: ""),
       _passwordController = TextEditingController(text: "");
 
   @override
-  void dispose(){
+  void dispose() {
     _emailController;
     _passwordController;
     super.dispose();
@@ -28,8 +29,6 @@ class _LoginState extends State<Login> {
 // });
 // print(response.body);
 // }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -84,27 +83,25 @@ class _LoginState extends State<Login> {
                             borderRadius:
                                 BorderRadius.all(Radius.circular(10))),
                       ),
-
                     ),
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   Container(
-                    height: 35,
-                    width: 260,
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        labelText: "Password",
-                        prefixIcon: Icon(Icons.password),
-                        fillColor: Colors.black,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10))
-                        )
-                      ),
-                      controller: _passwordController,
-                    )
-                  ),
+                      height: 35,
+                      width: 260,
+                      child: TextFormField(
+                        obscureText: true,
+                        decoration: InputDecoration(
+                            labelText: "Password",
+                            prefixIcon: Icon(Icons.password),
+                            fillColor: Colors.black,
+                            border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)))),
+                        controller: _passwordController,
+                      )),
                   const SizedBox(
                     height: 30,
                   ),
@@ -140,15 +137,19 @@ class _LoginState extends State<Login> {
                       },
                     ),
                   ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Container(
                     width: 250,
                     height: 39,
                     decoration: BoxDecoration(
-                      color: Colors.blue,
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      color: const Color(0xFF127CBF),
                       border: Border.all(width: 1),
                       boxShadow: [
                         BoxShadow(
-                            color: Colors.black87,
+                            color: Colors.black.withOpacity(0.5),
                             spreadRadius: 2,
                             blurRadius: 1,
                             offset: Offset(1, 5))

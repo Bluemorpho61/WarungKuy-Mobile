@@ -24,13 +24,19 @@ class _BerandaState extends State<Beranda> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 13.0),
-            TextField(
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search, color: Colors.black),
-                hintText: 'Cari warung di sini',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+            SizedBox(height: 15.0),
+            Padding(
+              padding: const EdgeInsets.only(
+                right: 8,
+                left: 8,
+              ),
+              child: TextField(
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.search, color: Colors.black),
+                  hintText: 'Cari warung di sini',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
                 ),
               ),
             ),
@@ -71,7 +77,7 @@ class _BerandaState extends State<Beranda> {
             Row(
               children: [
                 Container(
-                  width: 373.0,
+                  width: 360.0,
                   height: 149.0,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
@@ -102,7 +108,7 @@ class _BerandaState extends State<Beranda> {
                 ),
               ],
             ),
-            SizedBox(height: 15.0),
+            SizedBox(height: 30.0),
             Padding(
               padding: const EdgeInsets.only(left: 12.0),
               child: Text(
@@ -113,25 +119,27 @@ class _BerandaState extends State<Beranda> {
                     fontWeight: FontWeight.w700),
               ),
             ),
-            SizedBox(height: 16.0),
+            SizedBox(height: 30.0),
             Row(
               children: [
                 Container(
-                    width: 202.0,
-                    height: 136.0,
+                    width: 360.0,
+                    height: 149.0,
                     child: ListView(
                       scrollDirection: Axis.vertical,
                       children: [
                         Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 12.0),
                             child: berandaKomen(
                                 "Abah Roni",
                                 "Jalan Mastrip No. 52 Jember",
-                                "APLIKASI MANTAP JIWA COY ASLI GAK BOHONG",
-                                "../assets/foto1.png")),
+                                "APLIKASI MANTAP JIWA COY ASLI GAK BOHONG, APLIKASI MANTAP JIWA COY ASLI GAK BOHONG, APLIKASI MANTAP JIWA COY ASLI GAK BOHONG, APLIKASI MANTAP JIWA COY ASLI GAK BOHONG",
+                                "assets/foto1.png")),
                         SizedBox(height: 30.0),
                         Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 12.0),
                             child: berandaKomen(
                                 "Abah Roni",
                                 "Jalan Mastrip No. 52 Jember",
@@ -242,7 +250,7 @@ Widget berandaKomen(
         deskripsikomen,
         style: poppinsTextStyle.copyWith(
             color: Colors.black, fontWeight: FontWeight.w300, fontSize: 10.0),
-        textAlign: TextAlign.start,
+        textAlign: TextAlign.center,
       ),
     ],
   ));
