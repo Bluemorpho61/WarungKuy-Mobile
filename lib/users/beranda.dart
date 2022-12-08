@@ -77,7 +77,7 @@ class _BerandaState extends State<Beranda> {
             Row(
               children: [
                 Container(
-                  width: 360.0,
+                  width: 400.0,
                   height: 149.0,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
@@ -124,7 +124,7 @@ class _BerandaState extends State<Beranda> {
               children: [
                 Container(
                     width: 360.0,
-                    height: 149.0,
+                    height: 500.0,
                     child: ListView(
                       scrollDirection: Axis.vertical,
                       children: [
