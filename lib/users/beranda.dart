@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:google_fonts/google_fonts.dart';
 import 'package:warungkuy_mobile/constans.dart';
 
 class Beranda extends StatefulWidget {
@@ -11,14 +10,17 @@ class _BerandaState extends State<Beranda> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
-        elevation: 10,
+        elevation: 0,
         backgroundColor: Palette.bg1,
-        leading: Container(
-          child: Image.asset('assets/logo.png'),
-        ),
+        leading: Image.asset('assets/logo.png'),
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 1.0),
+            child: Image.asset('assets/button_login.png'),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -77,7 +79,7 @@ class _BerandaState extends State<Beranda> {
             Row(
               children: [
                 Container(
-                  width: 400.0,
+                  width: MediaQuery.of((context)).size.width,
                   height: 149.0,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
@@ -164,14 +166,15 @@ class _BerandaState extends State<Beranda> {
     return InkWell(
       onTap: () {},
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Card(
             elevation: 0.0,
             child: Image.asset(
               imgPath,
               fit: BoxFit.fill,
-              width: 141.55,
-              height: 84.0,
+              width: 142.55,
+              height: 83.0,
             ),
           ),
           Text(
@@ -180,7 +183,9 @@ class _BerandaState extends State<Beranda> {
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
                 fontSize: 12.0),
-            textAlign: TextAlign.start,
+          ),
+          SizedBox(
+            height: 1.0,
           ),
           Text(
             alamat,
@@ -188,22 +193,21 @@ class _BerandaState extends State<Beranda> {
                 color: Colors.black,
                 fontWeight: FontWeight.w300,
                 fontSize: 10.0),
-            textAlign: TextAlign.start,
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Icon(
                 Icons.star,
                 color: Colors.amber,
               ),
-              SizedBox(width: 5),
+              SizedBox(width: 7.45),
               Text(
                 rate,
                 style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.w300,
                     fontSize: 12.0),
-                textAlign: TextAlign.start,
               ),
             ],
           ),

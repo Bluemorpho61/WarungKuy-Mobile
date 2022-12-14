@@ -4,11 +4,14 @@ import 'package:warungkuy_mobile/users/beranda.dart';
 import 'package:warungkuy_mobile/users/cariwarung.dart';
 import 'package:warungkuy_mobile/users/favorite.dart';
 import 'package:warungkuy_mobile/users/profile.dart';
-
 class homepage extends StatefulWidget {
   const homepage({Key? key}) : super(key: key);
   @override
   State<homepage> createState() => _homepageState();
+}
+
+void api() async{
+
 }
 
 class _homepageState extends State<homepage> {
@@ -83,4 +86,6 @@ class _homepageState extends State<homepage> {
     );
   }
 }
+
+
 
