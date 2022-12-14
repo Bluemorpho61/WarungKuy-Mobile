@@ -3,10 +3,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:warungkuy_mobile/Home.dart';
-import 'package:warungkuy_mobile/signup.dart';
 import 'package:http/http.dart' as http;
-import 'package:warungkuy_mobile/users/beranda.dart';
-import 'package:url_launcher/link.dart';
+import 'package:warungkuy_mobile/fileKoneksi/api.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Login extends StatefulWidget {
@@ -36,7 +34,7 @@ class _LoginState extends State<Login> {
       data["password"] = _passwordController.text;
       var response = await http.post(
           Uri.parse(
-              "http://192.168.43.91/SI-WEB-SMT3/WarungKuy/api/users.php?method=login"),
+              API.loginApi),
           body: data);
       if (response.statusCode == 200) {
         var result = json.decode(response.body);
@@ -98,7 +96,7 @@ class _LoginState extends State<Login> {
                     ),
                     TextFormField(
                       decoration: InputDecoration(
-                          labelText: "Username",
+                          labelText: "E-Mail",
                           prefixIcon: Icon(Icons.person),
                           border: OutlineInputBorder(
                               borderRadius:

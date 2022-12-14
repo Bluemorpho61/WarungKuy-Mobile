@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:warungkuy/constans.dart';
-import 'package:warungkuy/kelas/menumakanan.dart';
-import 'package:warungkuy/kelas/resepf.dart';
+import 'package:warungkuy_mobile/constans.dart';
+import 'package:warungkuy_mobile/model/resepf.dart';
 
 class DetailScreen extends StatelessWidget {
   final wfavorite favorites;
