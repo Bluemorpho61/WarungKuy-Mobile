@@ -6,6 +6,8 @@ import 'package:warungkuy_mobile/Home.dart';
 import 'package:warungkuy_mobile/signup.dart';
 import 'package:http/http.dart' as http;
 import 'package:warungkuy_mobile/users/beranda.dart';
+import 'package:url_launcher/link.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -180,10 +182,8 @@ class _LoginState extends State<Login> {
                       ),
                       child: TextButton(
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SignUp()));
+                            _launchInBrowser(Uri.parse(
+                                "http://localhost/SI-WEB-SMT3/WarungKuy/daftar.php"));
                           },
                           child: Text(
                             "Daftar",
@@ -196,5 +196,14 @@ class _LoginState extends State<Login> {
             ),
           ),
         ));
+  }
+}
+
+Future<void> _launchInBrowser(Uri url) async {
+  if (!await launchUrl(
+    url,
+    mode: LaunchMode.externalApplication,
+  )) {
+    throw 'Could not launch $url';
   }
 }
