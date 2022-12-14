@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:warungkuy/users/detail_infowarung.dart';
+import 'package:warungkuy/kelas/resepf.dart';
 import 'package:warungkuy_mobile/constans.dart';
 
 class Favorite extends StatefulWidget {
