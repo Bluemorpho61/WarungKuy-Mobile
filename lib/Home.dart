@@ -4,17 +4,30 @@ import 'package:warungkuy_mobile/users/beranda.dart';
 import 'package:warungkuy_mobile/users/cariwarung.dart';
 import 'package:warungkuy_mobile/users/favorite.dart';
 import 'package:warungkuy_mobile/users/profile.dart';
+import 'package:http/http.dart' as http;
+
+import 'fileKoneksi/api.dart';
 class homepage extends StatefulWidget {
   const homepage({Key? key}) : super(key: key);
   @override
   State<homepage> createState() => _homepageState();
 }
 
-void api() async{
 
-}
 
 class _homepageState extends State<homepage> {
+
+  loadDataWarung()async{
+    var response = await http.get(Uri.parse(API.getTopRated));
+    print(response);
+  }
+
+  @override
+  void iniState(){
+    loadDataWarung();
+    super.initState();
+  }
+
   int _bottomNavCurrentIndex = 0;
   List<Widget> _container = [
     new Beranda(),

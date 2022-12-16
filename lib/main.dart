@@ -28,10 +28,10 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   int _bottomNavCurrentIndex = 0;
   List<Widget> _container = [
-    new Beranda(),
-    new Cariwarung(),
-    new Favorite(),
-    new Profile()
+    Beranda(),
+    Cariwarung(),
+    Favorite(),
+    Profile()
   ];
 
   @override
@@ -50,44 +50,44 @@ class _LandingPageState extends State<LandingPage> {
         currentIndex: _bottomNavCurrentIndex,
         items: [
           BottomNavigationBarItem(
-            activeIcon: new Icon(
+            activeIcon: Icon(
               Icons.home,
               color: Palette.bg2,
             ),
-            icon: new Icon(
+            icon: Icon(
               Icons.home,
               color: Colors.grey,
             ),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            activeIcon: new Icon(
+            activeIcon: Icon(
               Icons.search,
               color: Palette.bg2,
             ),
-            icon: new Icon(
+            icon: Icon(
               Icons.search,
               color: Colors.grey,
             ),
             label: 'Cari Warung',
           ),
           BottomNavigationBarItem(
-            activeIcon: new Icon(
+            activeIcon: Icon(
               Icons.favorite,
               color: Palette.bg2,
             ),
-            icon: new Icon(
+            icon: Icon(
               Icons.favorite_border,
               color: Colors.grey,
             ),
             label: 'Favorite',
           ),
           BottomNavigationBarItem(
-            activeIcon: new Icon(
+            activeIcon: Icon(
               Icons.person,
               color: Palette.bg2,
             ),
-            icon: new Icon(
+            icon: Icon(
               Icons.person_outline,
               color: Colors.grey,
             ),

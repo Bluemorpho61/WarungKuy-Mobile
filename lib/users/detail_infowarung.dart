@@ -10,9 +10,8 @@ class DetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-      child: Stack(
-        children: [
+      body: SafeArea(
+        child: Stack(children: [
           Image.asset(favorites.image),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 24, horizontal: 30),
@@ -168,59 +167,61 @@ class DetailScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(height: 10),            
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 400.0,
-                height: 85.0,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                Row(
-                    children: [
-                    Padding(
-                        padding: EdgeInsets.only(left: 20),
-                        child: Image.asset(
-                          "assets/nasipecelori.png",
-                          height: 68,
-                          width: 81,
-                        )),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                            padding: EdgeInsets.only(
-                              left: 12, top: 6,
-                            ),
-                            child: Text('Nasi Pecel Original',
-                                style: poppinsTextStyle.copyWith(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12.0))),
-                                    Padding(
-                            padding: EdgeInsets.only(
-                              left: 12, top: 6,
-                            ),
-                            child: Text('Nasi, sayuran, bumbu pecel, tempe, tahu, peyek, tongkol, sapi',
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis, 
-                                style: poppinsTextStyle.copyWith(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12.0
-                                    ))),
-                      ],
-                    )
-                  ])],)),
+              SizedBox(height: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                      width: 400.0,
+                      height: 85.0,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          Row(children: [
+                            Padding(
+                                padding: EdgeInsets.only(left: 20),
+                                child: Image.asset(
+                                  "assets/nasipecelori.png",
+                                  height: 68,
+                                  width: 81,
+                                )),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                    padding: EdgeInsets.only(
+                                      left: 12,
+                                      top: 6,
+                                    ),
+                                    child: Text('Nasi Pecel Original',
+                                        style: poppinsTextStyle.copyWith(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12.0))),
+                                Padding(
+                                    padding: EdgeInsets.only(
+                                      left: 12,
+                                      top: 6,
+                                    ),
+                                    child: Text(
+                                        'Nasi, sayuran, bumbu pecel, tempe, tahu, peyek, tongkol, sapi',
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: poppinsTextStyle.copyWith(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12.0))),
+                              ],
+                            )
+                          ])
+                        ],
+                      )),
+                ],
+              ),
             ],
           ),
-        ],
+        ]),
       ),
-        ]
-    ),
-    ),
     );
   }
 }

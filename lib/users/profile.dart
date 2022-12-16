@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:warungkuy_mobile/main.dart';
+import 'package:warungkuy_mobile/home.dart';
 
-class Profile extends StatefulWidget {
-  @override
-  State<Profile> createState() => _ProfileState();
-}
+import 'package:flutter/material.dart';
+import 'package:warungkuy_mobile/main.dart';
+import 'package:warungkuy_mobile/home.dart';
 
-class _ProfileState extends State<Profile> {
+class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,7 +18,19 @@ class _ProfileState extends State<Profile> {
                 width: MediaQuery.of(context).size.width,
                 height: 300,
                 decoration: BoxDecoration(
-                    color: Colors.blue,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.5),
+                        spreadRadius: 0,
+                        blurRadius: 4,
+                        offset: Offset(1, 2   ), // changes position of shadow
+                      ),
+                    ],
+                    // color: Colors.blue,
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [Colors.blue, Colors.white70]),
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(25),
                         bottomRight: Radius.circular(25))),
@@ -73,7 +86,20 @@ class _ProfileState extends State<Profile> {
                             ),
                           ),
                           SizedBox(
-                            height: 10,
+                            height: 5,
+                          ),
+                          Text(
+                            'Edit Data'.toString(),
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontFamily: 'SourceSansPro',
+                              color: Colors.teal.shade100,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 2.5,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
                           ),
                           Container(
                             height: 35,
@@ -141,6 +167,28 @@ class _ProfileState extends State<Profile> {
                                 border: OutlineInputBorder(
                                     borderRadius:
                                     BorderRadius.all(Radius.circular(10))),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            width: 200,
+                            height: 45,
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                backgroundColor: Colors.blueAccent,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                              onPressed: () {},
+                              child: Text(
+                                "Save",
+                                style: TextStyle(
+                                  color: Color(0xffffffff),
+                                ),
                               ),
                             ),
                           ),

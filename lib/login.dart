@@ -181,7 +181,7 @@ class _LoginState extends State<Login> {
                       child: TextButton(
                           onPressed: () {
                             _launchInBrowser(Uri.parse(
-                                "http://localhost/SI-WEB-SMT3/WarungKuy/daftar.php"));
+                                API.openUrlDaftar));
                           },
                           child: Text(
                             "Daftar",

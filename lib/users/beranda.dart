@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:warungkuy_mobile/constans.dart';
+import 'package:http/http.dart' as http;
+import 'package:warungkuy_mobile/fileKoneksi/api.dart';
 
 class Beranda extends StatefulWidget {
   @override
   State<Beranda> createState() => _BerandaState();
 }
 
+
 class _BerandaState extends State<Beranda> {
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,36 +84,7 @@ class _BerandaState extends State<Beranda> {
             SizedBox(height: 15.0),
             Row(
               children: [
-                Container(
-                  width: MediaQuery.of((context)).size.width,
-                  height: 149.0,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                          child: berandaCard(
-                              "Warung Mbok Lowo",
-                              "Jalan Mastrip No. 52 Jember",
-                              "4.0",
-                              "assets/pict1.png")),
-                      Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                          child: berandaCard(
-                              "Warung Mbok Lowo",
-                              "Jalan Mastrip No. 52 Jember",
-                              "4.0",
-                              "assets/pict2.png")),
-                      Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                          child: berandaCard(
-                              "Warung Mbok Lowo",
-                              "Jalan Mastrip No. 52 Jember",
-                              "4.0",
-                              "assets/pict3.png")),
-                    ],
-                  ),
-                ),
+                TopRated(),
               ],
             ),
             SizedBox(height: 30.0),
@@ -153,6 +130,82 @@ class _BerandaState extends State<Beranda> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+
+}
+
+Widget berandaKomen(
+  String namakomen,
+  String alamatkomen,
+  String deskripsikomen,
+  String komen,
+) {
+  return InkWell(
+      child: Column(
+    children: [
+      CircleAvatar(
+        radius: 16.0,
+        child: Image.asset(
+          komen,
+          fit: BoxFit.fill,
+          width: 32.56,
+          height: 35.0,
+        ),
+      ),
+      SizedBox(width: 13),
+      Text(
+        namakomen,
+        style: poppinsTextStyle.copyWith(
+            color: Colors.black, fontWeight: FontWeight.bold, fontSize: 10.0),
+        textAlign: TextAlign.start,
+      ),
+      SizedBox(width: 13),
+      Text(
+        alamatkomen,
+        style: poppinsTextStyle.copyWith(
+            color: Colors.black, fontWeight: FontWeight.w300, fontSize: 10.0),
+        textAlign: TextAlign.start,
+      ),
+      SizedBox(height: 6.20),
+      Text(
+        deskripsikomen,
+        style: poppinsTextStyle.copyWith(
+            color: Colors.black, fontWeight: FontWeight.w300, fontSize: 10.0),
+        textAlign: TextAlign.center,
+      ),
+    ],
+  ));
+}
+
+
+
+class TopRated extends StatelessWidget {
+  const TopRated({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of((context)).size.width,
+      height: 149.0,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: [
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: berandaCard("Warung Mbok Lowo",
+                  "Jalan Mastrip No. 52 Jember", "4.0", "assets/pict1.png")),
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: berandaCard("Warung Mbok Lowo",
+                  "Jalan Mastrip No. 52 Jember", "4.0", "assets/pict2.png")),
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: berandaCard("Warung Mbok Lowo",
+                  "Jalan Mastrip No. 52 Jember", "4.0", "assets/pict3.png")),
+        ],
       ),
     );
   }
@@ -215,47 +268,4 @@ class _BerandaState extends State<Beranda> {
       ),
     );
   }
-}
-
-Widget berandaKomen(
-  String namakomen,
-  String alamatkomen,
-  String deskripsikomen,
-  String komen,
-) {
-  return InkWell(
-      child: Column(
-    children: [
-      CircleAvatar(
-        radius: 16.0,
-        child: Image.asset(
-          komen,
-          fit: BoxFit.fill,
-          width: 32.56,
-          height: 35.0,
-        ),
-      ),
-      SizedBox(width: 13),
-      Text(
-        namakomen,
-        style: poppinsTextStyle.copyWith(
-            color: Colors.black, fontWeight: FontWeight.bold, fontSize: 10.0),
-        textAlign: TextAlign.start,
-      ),
-      SizedBox(width: 13),
-      Text(
-        alamatkomen,
-        style: poppinsTextStyle.copyWith(
-            color: Colors.black, fontWeight: FontWeight.w300, fontSize: 10.0),
-        textAlign: TextAlign.start,
-      ),
-      SizedBox(height: 6.20),
-      Text(
-        deskripsikomen,
-        style: poppinsTextStyle.copyWith(
-            color: Colors.black, fontWeight: FontWeight.w300, fontSize: 10.0),
-        textAlign: TextAlign.center,
-      ),
-    ],
-  ));
 }
