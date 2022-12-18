@@ -26,7 +26,9 @@ class _LoginState extends State<Login> {
     super.dispose();
   }
 
+
   Future<bool> _login() async {
+
     if (_passwordController.text.isNotEmpty &&
         _emailController.text.isNotEmpty) {
       var data = <String, dynamic>{};
@@ -37,7 +39,12 @@ class _LoginState extends State<Login> {
               API.loginApi),
           body: data);
       if (response.statusCode == 200) {
+        //TODO: API UNTUK CATCH WARUNG WORK, SKRG TINGGAL CRI TAU GMN CARA IMPLEMENT KE MAIN MENU
         var result = json.decode(response.body);
+        var testDataWarung =await http.get(Uri.parse(API.getTopRated));
+        var responseDataWarung =jsonDecode(testDataWarung.body);
+        print(responseDataWarung);
+        print(result);
         if (result["status"] == "ERR") {
           throw result["message"];
         } else {

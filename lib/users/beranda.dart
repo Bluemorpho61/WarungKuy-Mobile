@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:warungkuy_mobile/constans.dart';
 import 'package:http/http.dart' as http;
@@ -11,7 +13,30 @@ class Beranda extends StatefulWidget {
 
 class _BerandaState extends State<Beranda> {
 
+  Future<http.Response>fetchWarung(){
+    return http.get(Uri.parse(API.getTopRated));
+  }
 
+  void DisplayData()async{
+    final response =await fetchWarung();
+    if(response.statusCode==200){
+      List data =json.decode(response.body);
+
+      for(int i=0; i<data.length; i++){
+      print(data[i]['nama_warung']);
+      print(data[i]['alamat']);
+      print(data[i]['rating']);
+      print(data[i]['foto']);
+      }
+    }else{
+      print("Error");
+    }
+  }
+
+  @override
+  void initState(){
+    DisplayData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +109,27 @@ class _BerandaState extends State<Beranda> {
             SizedBox(height: 15.0),
             Row(
               children: [
-                TopRated(),
+               Container(
+                 width: MediaQuery.of((context)).size.width,
+                 height: 149.0,
+                 child: ListView(
+                   scrollDirection: Axis.horizontal,
+                   children: [
+                     Padding(
+                         padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                         child: berandaCard("Warung Mbok Lowo",
+                             "Jalan Mastrip No. 52 Jember", "4.0", "assets/pict1.png")),
+                     Padding(
+                         padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                         child: berandaCard("Warung Mbok Lowo",
+                             "Jalan Mastrip No. 52 Jember", "4.0", "assets/pict2.png")),
+                     Padding(
+                         padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                         child: berandaCard("Warung Mbok Lowo",
+                             "Jalan Mastrip No. 52 Jember", "4.0", "assets/pict3.png")),
+                   ],
+                 ),
+               )
               ],
             ),
             SizedBox(height: 30.0),
@@ -133,7 +178,64 @@ class _BerandaState extends State<Beranda> {
       ),
     );
   }
-
+  Widget berandaCard(
+      String berandaName,
+      String alamat,
+      String rate,
+      String imgPath,
+      ) {
+    return InkWell(
+      onTap: () {},
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Card(
+            elevation: 0.0,
+            child: Image.asset(
+              imgPath,
+              fit: BoxFit.fill,
+              width: 142.55,
+              height: 83.0,
+            ),
+          ),
+          Text(
+            berandaName,
+            style: poppinsTextStyle.copyWith(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 12.0),
+          ),
+          SizedBox(
+            height: 1.0,
+          ),
+          Text(
+            alamat,
+            style: poppinsTextStyle.copyWith(
+                color: Colors.black,
+                fontWeight: FontWeight.w300,
+                fontSize: 10.0),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Icon(
+                Icons.star,
+                color: Colors.amber,
+              ),
+              SizedBox(width: 7.45),
+              Text(
+                rate,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w300,
+                    fontSize: 12.0),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
 }
 
@@ -188,84 +290,9 @@ class TopRated extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of((context)).size.width,
-      height: 149.0,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: [
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: berandaCard("Warung Mbok Lowo",
-                  "Jalan Mastrip No. 52 Jember", "4.0", "assets/pict1.png")),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: berandaCard("Warung Mbok Lowo",
-                  "Jalan Mastrip No. 52 Jember", "4.0", "assets/pict2.png")),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: berandaCard("Warung Mbok Lowo",
-                  "Jalan Mastrip No. 52 Jember", "4.0", "assets/pict3.png")),
-        ],
-      ),
+
     );
   }
 
-  Widget berandaCard(
-    String berandaName,
-    String alamat,
-    String rate,
-    String imgPath,
-  ) {
-    return InkWell(
-      onTap: () {},
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Card(
-            elevation: 0.0,
-            child: Image.asset(
-              imgPath,
-              fit: BoxFit.fill,
-              width: 142.55,
-              height: 83.0,
-            ),
-          ),
-          Text(
-            berandaName,
-            style: poppinsTextStyle.copyWith(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 12.0),
-          ),
-          SizedBox(
-            height: 1.0,
-          ),
-          Text(
-            alamat,
-            style: poppinsTextStyle.copyWith(
-                color: Colors.black,
-                fontWeight: FontWeight.w300,
-                fontSize: 10.0),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Icon(
-                Icons.star,
-                color: Colors.amber,
-              ),
-              SizedBox(width: 7.45),
-              Text(
-                rate,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w300,
-                    fontSize: 12.0),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+
 }
