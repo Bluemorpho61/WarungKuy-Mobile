@@ -4,37 +4,37 @@ import 'package:flutter/material.dart';
 import 'package:warungkuy_mobile/constans.dart';
 import 'package:http/http.dart' as http;
 import 'package:warungkuy_mobile/fileKoneksi/api.dart';
+import 'package:warungkuy_mobile/model/warung_model.dart';
 
 class Beranda extends StatefulWidget {
   @override
   State<Beranda> createState() => _BerandaState();
 }
 
-
 class _BerandaState extends State<Beranda> {
+  List warungs = [];
 
-  Future<http.Response>fetchWarung(){
+  Future<http.Response> fetchWarung() {
     return http.get(Uri.parse(API.getTopRated));
   }
 
-  void DisplayData()async{
-    final response =await fetchWarung();
-    if(response.statusCode==200){
-      List data =json.decode(response.body);
-
-      for(int i=0; i<data.length; i++){
-      print(data[i]['nama_warung']);
-      print(data[i]['alamat']);
-      print(data[i]['rating']);
-      print(data[i]['foto']);
-      }
-    }else{
+  void DisplayData() async {
+    final response = await fetchWarung();
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+      setState(() {
+        for (var warung in body) {
+          warungs.add(WarungModel.fromJson(warung));
+        }
+        print(warungs.length);
+      });
+    } else {
       print("Error");
     }
   }
 
   @override
-  void initState(){
+  void initState() {
     DisplayData();
   }
 
@@ -109,27 +109,20 @@ class _BerandaState extends State<Beranda> {
             SizedBox(height: 15.0),
             Row(
               children: [
-               Container(
-                 width: MediaQuery.of((context)).size.width,
-                 height: 149.0,
-                 child: ListView(
-                   scrollDirection: Axis.horizontal,
-                   children: [
-                     Padding(
-                         padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                         child: berandaCard("Warung Mbok Lowo",
-                             "Jalan Mastrip No. 52 Jember", "4.0", "assets/pict1.png")),
-                     Padding(
-                         padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                         child: berandaCard("Warung Mbok Lowo",
-                             "Jalan Mastrip No. 52 Jember", "4.0", "assets/pict2.png")),
-                     Padding(
-                         padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                         child: berandaCard("Warung Mbok Lowo",
-                             "Jalan Mastrip No. 52 Jember", "4.0", "assets/pict3.png")),
-                   ],
-                 ),
-               )
+                Container(
+                  width: MediaQuery.of((context)).size.width,
+                  height: 149.0,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    separatorBuilder: (context, _) => SizedBox(width: 10),
+                    itemCount: warungs.length,
+                    itemBuilder: (context, index) => berandaCard(
+                        warungs[index].nama_warung,
+                        warungs[index].alamat,
+                        warungs[index].rating.toString(),
+                        '${API.getGambarWarung}/${warungs[index].foto}'),
+                  ),
+                )
               ],
             ),
             SizedBox(height: 30.0),
@@ -178,12 +171,13 @@ class _BerandaState extends State<Beranda> {
       ),
     );
   }
+
   Widget berandaCard(
-      String berandaName,
-      String alamat,
-      String rate,
-      String imgPath,
-      ) {
+    String berandaName,
+    String alamat,
+    String rate,
+    String imgPath,
+  ) {
     return InkWell(
       onTap: () {},
       child: Column(
@@ -191,7 +185,7 @@ class _BerandaState extends State<Beranda> {
         children: [
           Card(
             elevation: 0.0,
-            child: Image.asset(
+            child: Image.network(
               imgPath,
               fit: BoxFit.fill,
               width: 142.55,
@@ -208,12 +202,16 @@ class _BerandaState extends State<Beranda> {
           SizedBox(
             height: 1.0,
           ),
-          Text(
-            alamat,
-            style: poppinsTextStyle.copyWith(
-                color: Colors.black,
-                fontWeight: FontWeight.w300,
-                fontSize: 10.0),
+          SizedBox(
+            width: 240,
+            child: Text(
+              alamat,
+              overflow: TextOverflow.ellipsis,
+              style: poppinsTextStyle.copyWith(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w300,
+                  fontSize: 10.0),
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -236,7 +234,6 @@ class _BerandaState extends State<Beranda> {
       ),
     );
   }
-
 }
 
 Widget berandaKomen(
@@ -282,17 +279,11 @@ Widget berandaKomen(
   ));
 }
 
-
-
 class TopRated extends StatelessWidget {
   const TopRated({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-
-    );
+    return Container();
   }
-
-
 }

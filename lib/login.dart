@@ -41,9 +41,9 @@ class _LoginState extends State<Login> {
       if (response.statusCode == 200) {
         //TODO: API UNTUK CATCH WARUNG WORK, SKRG TINGGAL CRI TAU GMN CARA IMPLEMENT KE MAIN MENU
         var result = json.decode(response.body);
-        var testDataWarung =await http.get(Uri.parse(API.getTopRated));
-        var responseDataWarung =jsonDecode(testDataWarung.body);
-        print(responseDataWarung);
+        //var testDataWarung =await http.get(Uri.parse(API.getTopRated));
+        //var responseDataWarung =jsonDecode(testDataWarung.body);
+        //print(responseDataWarung);
         print(result);
         if (result["status"] == "ERR") {
           throw result["message"];

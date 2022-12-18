@@ -9,4 +9,5 @@ class API {
 
   static const String getTopRated = "$urlAPI/home.php?method=getWarung";
   static const String openUrlDaftar = "$urlIP/SI-WEB-SMT3/View/daftar.php";
+  static const String getGambarWarung ="$urlIP/SI-WEB-SMT3/Assets/img/";
 }
