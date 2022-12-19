@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:warungkuy_mobile/Home.dart';
 import 'package:http/http.dart' as http;
 import 'package:warungkuy_mobile/fileKoneksi/api.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:warungkuy_mobile/model/login_model.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -26,25 +28,26 @@ class _LoginState extends State<Login> {
     super.dispose();
   }
 
+//Save data user yang sdh login
 
   Future<bool> _login() async {
+    List userLoginData = [];
 
     if (_passwordController.text.isNotEmpty &&
         _emailController.text.isNotEmpty) {
       var data = <String, dynamic>{};
       data["email"] = _emailController.text;
       data["password"] = _passwordController.text;
-      var response = await http.post(
-          Uri.parse(
-              API.loginApi),
-          body: data);
+      var response = await http.post(Uri.parse(API.loginApi), body: data);
+
       if (response.statusCode == 200) {
-        //TODO: API UNTUK CATCH WARUNG WORK, SKRG TINGGAL CRI TAU GMN CARA IMPLEMENT KE MAIN MENU
         var result = json.decode(response.body);
-        //var testDataWarung =await http.get(Uri.parse(API.getTopRated));
-        //var responseDataWarung =jsonDecode(testDataWarung.body);
-        //print(responseDataWarung);
-        print(result);
+        print("Data Login: " + result.toString());
+        //TODO: SIMPAN DATA USER YG TELAH LOGIN SBG COOKIE SESSION
+        setState(() {
+            userLoginData.add(UserLogin.fromJson(result));
+          print("Data yang telah berhasil di catch: "+userLoginData.length.toString());
+        });
         if (result["status"] == "ERR") {
           throw result["message"];
         } else {
@@ -187,8 +190,7 @@ class _LoginState extends State<Login> {
                       ),
                       child: TextButton(
                           onPressed: () {
-                            _launchInBrowser(Uri.parse(
-                                API.openUrlDaftar));
+                            _launchInBrowser(Uri.parse(API.openUrlDaftar));
                           },
                           child: Text(
                             "Daftar",

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:warungkuy_mobile/constans.dart';
 import 'package:http/http.dart' as http;
 import 'package:warungkuy_mobile/fileKoneksi/api.dart';
+import 'package:warungkuy_mobile/login.dart';
 import 'package:warungkuy_mobile/model/warung_model.dart';
 
 class Beranda extends StatefulWidget {
@@ -49,7 +50,10 @@ class _BerandaState extends State<Beranda> {
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 1.0),
-            child: Image.asset('assets/button_login.png'),
+            child: TextButton(
+                style: TextButton.styleFrom(backgroundColor: Colors.blueGrey),
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>const Login())),
+                child: Text("Logout")),
           ),
         ],
       ),
