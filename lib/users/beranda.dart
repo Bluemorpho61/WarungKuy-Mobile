@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:warungkuy_mobile/constans.dart';
 import 'package:http/http.dart' as http;
 import 'package:warungkuy_mobile/fileKoneksi/api.dart';
 import 'package:warungkuy_mobile/login.dart';
+import 'package:warungkuy_mobile/model/login_model.dart';
 import 'package:warungkuy_mobile/model/warung_model.dart';
 
 class Beranda extends StatefulWidget {
@@ -14,6 +16,7 @@ class Beranda extends StatefulWidget {
 
 class _BerandaState extends State<Beranda> {
   List warungs = [];
+  var namaUser;
 
   Future<http.Response> fetchWarung() {
     return http.get(Uri.parse(API.getTopRated));
@@ -34,9 +37,15 @@ class _BerandaState extends State<Beranda> {
     }
   }
 
+  void getUserLogin() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    namaUser = pref.getString("username");
+  }
+
   @override
   void initState() {
     DisplayData();
+    getUserLogin();
   }
 
   @override
@@ -52,7 +61,8 @@ class _BerandaState extends State<Beranda> {
             padding: EdgeInsets.only(right: 1.0),
             child: TextButton(
                 style: TextButton.styleFrom(backgroundColor: Colors.blueGrey),
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>const Login())),
+                onPressed: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Login())),
                 child: Text("Logout")),
           ),
         ],
@@ -81,7 +91,7 @@ class _BerandaState extends State<Beranda> {
             Padding(
               padding: const EdgeInsets.only(left: 12.0),
               child: Text(
-                "Hai, User",
+                "Hai, " + namaUser.toString(),
                 style: poppinsTextStyle.copyWith(
                     color: Colors.black,
                     fontSize: 12,
@@ -281,13 +291,4 @@ Widget berandaKomen(
       ),
     ],
   ));
-}
-
-class TopRated extends StatelessWidget {
-  const TopRated({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
 }

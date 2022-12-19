@@ -1,19 +1,23 @@
-import 'dart:convert';
+class datauser_model {
+  String? idUser;
+  String? username;
+  String? email;
+  String? password;
+  String? hak;
+  String? alamat;
+  String? foto;
 
-class UserLogin {
-  late String username, email, password, hak, alamat, foto;
-  late int id_user;
+  datauser_model(
+      {this.idUser,
+      this.username,
+      this.email,
+      this.password,
+      this.hak,
+      this.alamat,
+      this.foto});
 
-  UserLogin(
-      {required this.id_user,
-      required this.alamat,
-      required this.username,
-      required this.password,
-      required this.hak,
-      required this.foto});
-
-  UserLogin.fromJson(Map<String, dynamic> json) {
-    id_user = int.parse(json['id_user']);
+  datauser_model.fromJson(Map<String, dynamic> json) {
+    idUser = json['id_user'];
     username = json['username'];
     email = json['email'];
     password = json['password'];
@@ -23,14 +27,14 @@ class UserLogin {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id_user': id_user,
-      'username': username,
-      'email': email,
-      'password': password,
-      'hak':hak,
-      'alamat':alamat,
-      'foto':foto
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id_user'] = this.idUser;
+    data['username'] = this.username;
+    data['email'] = this.email;
+    data['password'] = this.password;
+    data['hak'] = this.hak;
+    data['alamat'] = this.alamat;
+    data['foto'] = this.foto;
+    return data;
   }
 }

@@ -31,6 +31,7 @@ class _LoginState extends State<Login> {
 //Save data user yang sdh login
 
   Future<bool> _login() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
     List userLoginData = [];
 
     if (_passwordController.text.isNotEmpty &&
@@ -43,11 +44,8 @@ class _LoginState extends State<Login> {
       if (response.statusCode == 200) {
         var result = json.decode(response.body);
         print("Data Login: " + result.toString());
-        //TODO: SIMPAN DATA USER YG TELAH LOGIN SBG COOKIE SESSION
-        setState(() {
-            userLoginData.add(UserLogin.fromJson(result));
-          print("Data yang telah berhasil di catch: "+userLoginData.length.toString());
-        });
+        pref.setString("username", result['username']);
+        
         if (result["status"] == "ERR") {
           throw result["message"];
         } else {
