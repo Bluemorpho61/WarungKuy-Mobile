@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:warungkuy_mobile/constans.dart';
 import 'package:http/http.dart' as http;
@@ -20,6 +22,36 @@ class _BerandaState extends State<Beranda> {
 
   Future<http.Response> fetchWarung() {
     return http.get(Uri.parse(API.getTopRated));
+  }
+
+  //set a method to logout user
+  void _logout() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setBool("isLogin", false);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const Login()));
+  }
+
+//create a method to warn user when he/she is about to exit the app
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => new AlertDialog(
+            title: new Text('Are you sure?'),
+            content: new Text('Do you want to exit an App'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: new Text('No'),
+              ),
+              TextButton(
+                onPressed: () => SystemNavigator.pop(),
+                child: new Text('Yes'),
+              ),
+            ],
+          ),
+        )) ??
+        false;
   }
 
   void DisplayData() async {
@@ -42,145 +74,157 @@ class _BerandaState extends State<Beranda> {
     namaUser = pref.getString("username");
   }
 
+  void checkUserSesson() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var isLogin = pref.getBool("isLogin");
+    if (isLogin == null || isLogin == false) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const Login()));
+    }
+  }
+
   @override
   void initState() {
     DisplayData();
     getUserLogin();
+    checkUserSesson();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Palette.bg1,
-        leading: Image.asset('assets/logo.png'),
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 1.0),
-            child: TextButton(
-                style: TextButton.styleFrom(backgroundColor: Colors.blueGrey),
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Login())),
-                child: Text("Logout")),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 15.0),
+    return WillPopScope(
+      onWillPop: () => _onWillPop(),
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: Palette.bg1,
+          leading: Image.asset('assets/logo.png'),
+          actions: [
             Padding(
-              padding: const EdgeInsets.only(
-                right: 8,
-                left: 8,
-              ),
-              child: TextField(
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.search, color: Colors.black),
-                  hintText: 'Cari warung di sini',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
+              padding: EdgeInsets.only(right: 1.0),
+              child: TextButton(
+                  style: TextButton.styleFrom(backgroundColor: Colors.blueGrey),
+                  onPressed: () => _logout(),
+                  child: Text("Logout")),
+            ),
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 15.0),
+              Padding(
+                padding: const EdgeInsets.only(
+                  right: 8,
+                  left: 8,
+                ),
+                child: TextField(
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.search, color: Colors.black),
+                    hintText: 'Cari warung di sini',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: 31.0),
-            Padding(
-              padding: const EdgeInsets.only(left: 12.0),
-              child: Text(
-                "Hai, " + namaUser.toString(),
-                style: poppinsTextStyle.copyWith(
-                    color: Colors.black,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700),
+              SizedBox(height: 31.0),
+              Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Text(
+                  "Hai, " + namaUser.toString(),
+                  style: poppinsTextStyle.copyWith(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700),
+                ),
               ),
-            ),
-            SizedBox(height: 1.0),
-            Padding(
-              padding: const EdgeInsets.only(left: 12.0),
-              child: Text(
-                "Mau cari makan?",
-                style: poppinsTextStyle.copyWith(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700),
+              SizedBox(height: 1.0),
+              Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Text(
+                  "Mau cari makan?",
+                  style: poppinsTextStyle.copyWith(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700),
+                ),
               ),
-            ),
-            SizedBox(height: 17.0),
-            Padding(
-              padding: const EdgeInsets.only(left: 12.0),
-              child: Text(
-                "Top Rated",
-                style: poppinsTextStyle.copyWith(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700),
+              SizedBox(height: 17.0),
+              Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Text(
+                  "Top Rated",
+                  style: poppinsTextStyle.copyWith(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700),
+                ),
               ),
-            ),
-            SizedBox(height: 15.0),
-            Row(
-              children: [
-                Container(
-                  width: MediaQuery.of((context)).size.width,
-                  height: 149.0,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    separatorBuilder: (context, _) => SizedBox(width: 10),
-                    itemCount: warungs.length,
-                    itemBuilder: (context, index) => berandaCard(
-                        warungs[index].nama_warung,
-                        warungs[index].alamat,
-                        warungs[index].rating.toString(),
-                        '${API.getGambarWarung}/${warungs[index].foto}'),
-                  ),
-                )
-              ],
-            ),
-            SizedBox(height: 30.0),
-            Padding(
-              padding: const EdgeInsets.only(left: 12.0),
-              child: Text(
-                "Kata Pengguna",
-                style: poppinsTextStyle.copyWith(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700),
+              SizedBox(height: 15.0),
+              Row(
+                children: [
+                  Container(
+                    width: MediaQuery.of((context)).size.width,
+                    height: 149.0,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      separatorBuilder: (context, _) => SizedBox(width: 10),
+                      itemCount: warungs.length,
+                      itemBuilder: (context, index) => berandaCard(
+                          warungs[index].nama_warung,
+                          warungs[index].alamat,
+                          warungs[index].rating.toString(),
+                          '${API.getGambarWarung}/${warungs[index].foto}'),
+                    ),
+                  )
+                ],
               ),
-            ),
-            SizedBox(height: 30.0),
-            Row(
-              children: [
-                Container(
-                    width: 360.0,
-                    height: 500.0,
-                    child: ListView(
-                      scrollDirection: Axis.vertical,
-                      children: [
-                        Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 12.0),
-                            child: berandaKomen(
-                                "Abah Roni",
-                                "Jalan Mastrip No. 52 Jember",
-                                "APLIKASI MANTAP JIWA COY ASLI GAK BOHONG, APLIKASI MANTAP JIWA COY ASLI GAK BOHONG, APLIKASI MANTAP JIWA COY ASLI GAK BOHONG, APLIKASI MANTAP JIWA COY ASLI GAK BOHONG",
-                                "assets/foto1.png")),
-                        SizedBox(height: 30.0),
-                        Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 12.0),
-                            child: berandaKomen(
-                                "Abah Roni",
-                                "Jalan Mastrip No. 52 Jember",
-                                "APLIKASI MANTAP JIWA COY ASLI GAK BOHONG",
-                                "assets/foto2.png")),
-                      ],
-                    )),
-              ],
-            ),
-          ],
+              SizedBox(height: 30.0),
+              Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Text(
+                  "Kata Pengguna",
+                  style: poppinsTextStyle.copyWith(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700),
+                ),
+              ),
+              SizedBox(height: 30.0),
+              Row(
+                children: [
+                  Container(
+                      width: 360.0,
+                      height: 500.0,
+                      child: ListView(
+                        scrollDirection: Axis.vertical,
+                        children: [
+                          Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12.0),
+                              child: berandaKomen(
+                                  "Abah Roni",
+                                  "Jalan Mastrip No. 52 Jember",
+                                  "APLIKASI MANTAP JIWA COY ASLI GAK BOHONG, APLIKASI MANTAP JIWA COY ASLI GAK BOHONG, APLIKASI MANTAP JIWA COY ASLI GAK BOHONG, APLIKASI MANTAP JIWA COY ASLI GAK BOHONG",
+                                  "assets/foto1.png")),
+                          SizedBox(height: 30.0),
+                          Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12.0),
+                              child: berandaKomen(
+                                  "Abah Roni",
+                                  "Jalan Mastrip No. 52 Jember",
+                                  "APLIKASI MANTAP JIWA COY ASLI GAK BOHONG",
+                                  "assets/foto2.png")),
+                        ],
+                      )),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

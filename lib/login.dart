@@ -28,8 +28,16 @@ class _LoginState extends State<Login> {
     super.dispose();
   }
 
-//Save data user yang sdh login
 
+//create a function to save login session
+  Future<void> _saveLoginSession() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setBool("isLogin", true);
+    //print the value of isLogin
+    print(pref.getBool("isLogin"));
+  }
+
+//Save data user yang sdh login
   Future<bool> _login() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     List userLoginData = [];
@@ -45,7 +53,8 @@ class _LoginState extends State<Login> {
         var result = json.decode(response.body);
         print("Data Login: " + result.toString());
         pref.setString("username", result['username']);
-        
+        pref.setBool("isLogin", true);
+
         if (result["status"] == "ERR") {
           throw result["message"];
         } else {
