@@ -9,6 +9,7 @@ class Cariwarung extends StatefulWidget {
 }
 
 class _CariwarungState extends State<Cariwarung> {
+// ini fungsi buat search tp belum selesai
   void updateList(String value) {
     setState(() {});
   }
@@ -35,6 +36,7 @@ class _CariwarungState extends State<Cariwarung> {
                 height: 20.0,
               ),
               TextField(
+                //ini fungsinya buat manggil fungsinya
                 onChanged: (value) => updateList(value),
                 decoration: InputDecoration(
                   filled: true,
@@ -50,6 +52,7 @@ class _CariwarungState extends State<Cariwarung> {
                   ),
                 ),
               ),
+              // ini sebenernya fungsinya buat display daftar warungnya
               SizedBox(
                 height: 20.0,
               ),
