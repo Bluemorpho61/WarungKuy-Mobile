@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:warungkuy_mobile/constans.dart';
 import 'package:warungkuy_mobile/model/menumakanan.dart';
 import 'package:warungkuy_mobile/model/resepf.dart';
+import 'package:warungkuy_mobile/users/cariwarung.dart';
+import 'package:warungkuy_mobile/users/favorite.dart';
+import 'package:warungkuy_mobile/users/katapengguna.dart';
+
 
 class DetailScreen extends StatelessWidget {
   final wfavorite favorites;
@@ -23,6 +28,8 @@ class DetailScreen extends StatelessWidget {
             child: IconButton(
               onPressed: () {
                 Navigator.pop(context);
+            
+                    
               },
               icon: Icon(Icons.arrow_back_ios, color: Colors.white),
             ),
@@ -121,7 +128,9 @@ class DetailScreen extends StatelessWidget {
                   onTap: () {},
                   child: IconButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      _launchInBrowser(Uri.parse(
+                        favorites.maps,
+                      ));
                     },
                     icon: Icon(Icons.public, size: 20, color: Colors.black),
                   ),
@@ -136,7 +145,10 @@ class DetailScreen extends StatelessWidget {
                         onTap: () {},
                         child: IconButton(
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Katapengguna()));
                           },
                           icon: Icon(Icons.comment,
                               size: 20, color: Colors.black),
@@ -189,6 +201,7 @@ class DetailScreen extends StatelessWidget {
                                 fontSize: 10.0)),
                         Text(menumakanans[index].deskripsim,
                             maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                             style: poppinsTextStyle.copyWith(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w300,
@@ -208,5 +221,14 @@ class DetailScreen extends StatelessWidget {
         ),
       ])
     ])));
+  }
+}
+
+Future<void> _launchInBrowser(Uri url) async {
+  if (!await launchUrl(
+    url,
+    mode: LaunchMode.externalApplication,
+  )) {
+    throw 'Could not launch $url';
   }
 }
