@@ -4,6 +4,7 @@ import 'package:warungkuy/constans.dart';
 import 'package:warungkuy/model/menumakanan.dart';
 import 'package:warungkuy/model/resepf.dart';
 import 'package:warungkuy/users/cariwarung.dart';
+import 'package:warungkuy/users/favorite.dart';
 import 'package:warungkuy/users/katapengguna.dart';
 
 class DetailScreen extends StatelessWidget {
@@ -26,9 +27,8 @@ class DetailScreen extends StatelessWidget {
             child: IconButton(
               onPressed: () {
                 Navigator.pop(context);
-                 
-                  
-                
+            
+                    
               },
               icon: Icon(Icons.arrow_back_ios, color: Colors.white),
             ),
@@ -144,8 +144,10 @@ class DetailScreen extends StatelessWidget {
                         onTap: () {},
                         child: IconButton(
                           onPressed: () {
-                            Navigator.pop(context);
-                            
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Katapengguna()));
                           },
                           icon: Icon(Icons.comment,
                               size: 20, color: Colors.black),
