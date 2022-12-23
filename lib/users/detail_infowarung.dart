@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:warungkuy/constans.dart';
-import 'package:warungkuy/model/menumakanan.dart';
-import 'package:warungkuy/model/resepf.dart';
-import 'package:warungkuy/users/cariwarung.dart';
-import 'package:warungkuy/users/favorite.dart';
-import 'package:warungkuy/users/katapengguna.dart';
+import 'package:warungkuy_mobile/constans.dart';
+import 'package:warungkuy_mobile/model/menumakanan.dart';
+import 'package:warungkuy_mobile/model/resepf.dart';
+import 'package:warungkuy_mobile/users/cariwarung.dart';
+import 'package:warungkuy_mobile/users/favorite.dart';
+import 'package:warungkuy_mobile/users/katapengguna.dart';
+
 
 class DetailScreen extends StatelessWidget {
   final wfavorite favorites;

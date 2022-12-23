@@ -1,6 +1,15 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:warungkuy/constans.dart';
+import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:warungkuy_mobile/constans.dart';
+import 'package:http/http.dart' as http;
+import 'package:warungkuy_mobile/fileKoneksi/api.dart';
+import 'package:warungkuy_mobile/login.dart';
+import 'package:warungkuy_mobile/model/login_model.dart';
+import 'package:warungkuy_mobile/model/warung_model.dart';
 
 class Beranda extends StatefulWidget {
   @override
@@ -8,158 +17,215 @@ class Beranda extends StatefulWidget {
 }
 
 class _BerandaState extends State<Beranda> {
+  List warungs = [];
+  var namaUser;
+
+  Future<http.Response> fetchWarung() {
+    return http.get(Uri.parse(API.getTopRated));
+  }
+
+  //set a method to logout user
+  void _logout() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setBool("isLogin", false);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const Login()));
+  }
+
+//create a method to warn user when he/she is about to exit the app
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => new AlertDialog(
+            title: new Text('Are you sure?'),
+            content: new Text('Do you want to exit an App'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: new Text('No'),
+              ),
+              TextButton(
+                onPressed: () => SystemNavigator.pop(),
+                child: new Text('Yes'),
+              ),
+            ],
+          ),
+        )) ??
+        false;
+  }
+
+  void DisplayData() async {
+    final response = await fetchWarung();
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+      setState(() {
+        for (var warung in body) {
+          warungs.add(WarungModel.fromJson(warung));
+        }
+        print(warungs.length);
+      });
+    } else {
+      print("Error");
+    }
+  }
+
+  void getUserLogin() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    namaUser = pref.getString("username");
+  }
+
+  void checkUserSesson() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var isLogin = pref.getBool("isLogin");
+    if (isLogin == null || isLogin == false) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const Login()));
+    }
+  }
+
+  @override
+  void initState() {
+    DisplayData();
+    getUserLogin();
+    checkUserSesson();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Palette.bg1,
-        leading: Image.asset('assets/logo.png'),
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 1.0),
-            child: Image.asset('assets/button_login.png'),
-          ),
-        ],
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 13.0),
-          Padding(
-            padding: EdgeInsets.all(8),
-            child: TextFormField(
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
+    return WillPopScope(
+      onWillPop: () => _onWillPop(),
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: Palette.bg1,
+          leading: Image.asset('assets/logo.png'),
+          actions: [
+            Padding(
+              padding: EdgeInsets.only(right: 1.0),
+              child: TextButton(
+                  style: TextButton.styleFrom(backgroundColor: Colors.blueGrey),
+                  onPressed: () => _logout(),
+                  child: Text("Logout")),
+            ),
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 15.0),
+              Padding(
+                padding: const EdgeInsets.only(
+                  right: 8,
+                  left: 8,
                 ),
-                hintText: 'Cari warung di sini',
-                contentPadding: EdgeInsets.all(0),
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: Colors.black,
+                child: TextField(
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.search, color: Colors.black),
+                    hintText: 'Cari warung di sini',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-          SizedBox(height: 31.0),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: Text(
-              "Hai, User",
-              style: poppinsTextStyle.copyWith(
-                  color: Colors.black,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700),
-            ),
-          ),
-          SizedBox(height: 1.0),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: Text(
-              "Mau cari makan?",
-              style: poppinsTextStyle.copyWith(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700),
-            ),
-          ),
-          SizedBox(height: 17.0),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: Text(
-              "Top Rated",
-              style: poppinsTextStyle.copyWith(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700),
-            ),
-          ),
-          SizedBox(height: 15.0),
-          Row(
-            children: [
-              Container(
-                width: 360.0,
-                height: 149.0,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        child: berandaCard(
-                            "Warung Mbok Lowo",
-                            "Jalan Mastrip No. 52 Jember",
-                            "4.0",
-                            "assets/pict1.png")),
-                    Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        child: berandaCard(
-                            "Warung Mbok Lowo",
-                            "Jalan Mastrip No. 52 Jember",
-                            "4.0",
-                            "assets/pict2.png")),
-                    Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        child: berandaCard(
-                            "Warung Mbok Lowo",
-                            "Jalan Mastrip No. 52 Jember",
-                            "4.0",
-                            "assets/pict3.png")),
-                    Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        child: berandaCard(
-                            "Warung Mbok Lowo",
-                            "Jalan Mastrip No. 52 Jember",
-                            "4.0",
-                            "assets/pict4.png")),
-                  ],
+              SizedBox(height: 31.0),
+              Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Text(
+                  "Hai, " + namaUser.toString(),
+                  style: poppinsTextStyle.copyWith(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700),
                 ),
+              ),
+              SizedBox(height: 1.0),
+              Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Text(
+                  "Mau cari makan?",
+                  style: poppinsTextStyle.copyWith(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700),
+                ),
+              ),
+              SizedBox(height: 17.0),
+              Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Text(
+                  "Top Rated",
+                  style: poppinsTextStyle.copyWith(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700),
+                ),
+              ),
+              SizedBox(height: 15.0),
+              Row(
+                children: [
+                  Container(
+                    width: MediaQuery.of((context)).size.width,
+                    height: 149.0,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      separatorBuilder: (context, _) => SizedBox(width: 10),
+                      itemCount: warungs.length,
+                      itemBuilder: (context, index) => berandaCard(
+                          warungs[index].nama_warung,
+                          warungs[index].alamat,
+                          warungs[index].rating.toString(),
+                          '${API.getGambarWarung}/${warungs[index].foto}'),
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: 30.0),
+              Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Text(
+                  "Kata Pengguna",
+                  style: poppinsTextStyle.copyWith(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700),
+                ),
+              ),
+              SizedBox(height: 30.0),
+              Row(
+                children: [
+                  Container(
+                      width: 360.0,
+                      height: 500.0,
+                      child: ListView(
+                        scrollDirection: Axis.vertical,
+                        children: [
+                          Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12.0),
+                              child: berandaKomen(
+                                  "Abah Roni",
+                                  "Jalan Mastrip No. 52 Jember",
+                                  "APLIKASI MANTAP JIWA COY ASLI GAK BOHONG, APLIKASI MANTAP JIWA COY ASLI GAK BOHONG, APLIKASI MANTAP JIWA COY ASLI GAK BOHONG, APLIKASI MANTAP JIWA COY ASLI GAK BOHONG",
+                                  "assets/foto1.png")),
+                          SizedBox(height: 30.0),
+                          Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12.0),
+                              child: berandaKomen(
+                                  "Abah Roni",
+                                  "Jalan Mastrip No. 52 Jember",
+                                  "APLIKASI MANTAP JIWA COY ASLI GAK BOHONG",
+                                  "assets/foto2.png")),
+                        ],
+                      )),
+                ],
               ),
             ],
           ),
-          SizedBox(height: 15.0),
-          Padding(
-            padding: const EdgeInsets.only(left: 12.0),
-            child: Text(
-              "Kata Pengguna",
-              style: poppinsTextStyle.copyWith(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700),
-            ),
-          ),
-          SizedBox(height: 16.0),
-          Row(
-            children: [
-              Container(
-                  width: 360.0,
-                  height: 150.0,
-                  child: ListView(
-                    scrollDirection: Axis.vertical,
-                    children: [
-                      Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 12.0),
-                          child: berandaKomen(
-                              "Abah Roni",
-                              "Jalan Mastrip No. 52 Jember",
-                              "Jangkauan pemasaran Mamikos luas hingga ke seluruh Indonesia. Sehingga semua orang, baik di Yogya maupun di luar daerah dapat menemukan kos saya",
-                              "assets/foto1.png")),
-                      SizedBox(height: 30.0),
-                      Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 12.0),
-                          child: berandaKomen(
-                              "Abah Roni",
-                              "Jalan Mastrip No. 52 Jember",
-                              "Jangkauan pemasaran Mamikos luas hingga ke seluruh Indonesia. Sehingga semua orang, baik di Yogya maupun di luar daerah dapat menemukan kos saya",
-                              "assets/foto2.png")),
-                    ],
-                  )),
-            ],
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -177,7 +243,7 @@ class _BerandaState extends State<Beranda> {
         children: [
           Card(
             elevation: 0.0,
-            child: Image.asset(
+            child: Image.network(
               imgPath,
               fit: BoxFit.fill,
               width: 142.55,
@@ -194,12 +260,16 @@ class _BerandaState extends State<Beranda> {
           SizedBox(
             height: 1.0,
           ),
-          Text(
-            alamat,
-            style: poppinsTextStyle.copyWith(
-                color: Colors.black,
-                fontWeight: FontWeight.w300,
-                fontSize: 10.0),
+          SizedBox(
+            width: 240,
+            child: Text(
+              alamat,
+              overflow: TextOverflow.ellipsis,
+              style: poppinsTextStyle.copyWith(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w300,
+                  fontSize: 10.0),
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
