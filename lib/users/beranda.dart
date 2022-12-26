@@ -10,6 +10,7 @@ import 'package:warungkuy_mobile/fileKoneksi/api.dart';
 import 'package:warungkuy_mobile/login.dart';
 import 'package:warungkuy_mobile/model/login_model.dart';
 import 'package:warungkuy_mobile/model/warung_model.dart';
+import 'package:warungkuy_mobile/users/detail_infowarung.dart';
 
 class Beranda extends StatefulWidget {
   @override
@@ -19,6 +20,7 @@ class Beranda extends StatefulWidget {
 class _BerandaState extends State<Beranda> {
   List warungs = [];
   var namaUser;
+  bool isExist = true;
 
   Future<http.Response> fetchWarung() {
     return http.get(Uri.parse(API.getTopRated));
@@ -28,6 +30,7 @@ class _BerandaState extends State<Beranda> {
   void _logout() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setBool("isLogin", false);
+    pref.clear();
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const Login()));
   }
@@ -115,22 +118,22 @@ class _BerandaState extends State<Beranda> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 15.0),
-              Padding(
-                padding: const EdgeInsets.only(
-                  right: 8,
-                  left: 8,
-                ),
-                child: TextField(
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.search, color: Colors.black),
-                    hintText: 'Cari warung di sini',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 31.0),
+              // Padding(
+              //   padding: const EdgeInsets.only(
+              //     right: 8,
+              //     left: 8,
+              //   ),
+              //   child: TextField(
+              //     decoration: InputDecoration(
+              //       prefixIcon: const Icon(Icons.search, color: Colors.black),
+              //       hintText: 'Cari warung di sini',
+              //       border: OutlineInputBorder(
+              //         borderRadius: BorderRadius.circular(15),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // SizedBox(height: 31.0),
               Padding(
                 padding: const EdgeInsets.only(left: 12.0),
                 child: Text(
@@ -176,7 +179,7 @@ class _BerandaState extends State<Beranda> {
                       itemBuilder: (context, index) => berandaCard(
                           warungs[index].nama_warung,
                           warungs[index].alamat,
-                          warungs[index].rating.toString(),
+                          "${warungs[index].rating}/5",
                           '${API.getGambarWarung}/${warungs[index].foto}'),
                     ),
                   )
@@ -237,7 +240,24 @@ class _BerandaState extends State<Beranda> {
     String imgPath,
   ) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        //TODO: BIKIN METHOD FETCH DATA UTK WARUNG
+        Future<bool> _fetchDataForInfoWarung() async {
+          var response = await http.get(Uri.parse(API.getWarung));
+          if (response.statusCode == 200) {
+            var data = json.decode(response.body);
+            var rest = data['data'] as List;
+            // warungs = rest.map<Warung>((json) => Warung.fromJson(json)).toList();
+            return true;
+          } else {
+            return false;
+          }
+        }
+
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context)=>DetailScreen())
+            );
+      },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -248,6 +268,9 @@ class _BerandaState extends State<Beranda> {
               fit: BoxFit.fill,
               width: 142.55,
               height: 83.0,
+              errorBuilder: (context, error, stackTrace) {
+                return Image.asset('assets/store.png',width: 142.55,height: 83.0,);
+              },
             ),
           ),
           Text(

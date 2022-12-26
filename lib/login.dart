@@ -16,6 +16,8 @@ class Login extends StatefulWidget {
   State<Login> createState() => _LoginState();
 }
 
+
+
 class _LoginState extends State<Login> {
   final TextEditingController _emailController =
           TextEditingController(text: ""),
@@ -29,6 +31,8 @@ class _LoginState extends State<Login> {
   }
 
 
+  
+
 //create a function to save login session
   Future<void> _saveLoginSession() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -40,8 +44,6 @@ class _LoginState extends State<Login> {
 //Save data user yang sdh login
   Future<bool> _login() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    List userLoginData = [];
-
     if (_passwordController.text.isNotEmpty &&
         _emailController.text.isNotEmpty) {
       var data = <String, dynamic>{};
@@ -51,10 +53,11 @@ class _LoginState extends State<Login> {
 
       if (response.statusCode == 200) {
         var result = json.decode(response.body);
-        print("Data Login: " + result.toString());
+        
         pref.setString("username", result['username']);
+        pref.setString("hak", result['hak']);
         pref.setBool("isLogin", true);
-
+        pref.setString("id_user", result['id_user']);
         if (result["status"] == "ERR") {
           throw result["message"];
         } else {
@@ -212,6 +215,8 @@ class _LoginState extends State<Login> {
         ));
   }
 }
+
+
 
 Future<void> _launchInBrowser(Uri url) async {
   if (!await launchUrl(

@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:warungkuy_mobile/constans.dart';
 import 'package:warungkuy_mobile/users/beranda.dart';
 import 'package:warungkuy_mobile/users/cariwarung.dart';
@@ -17,6 +20,7 @@ class homepage extends StatefulWidget {
 
 class _homepageState extends State<homepage> {
 
+
   int _bottomNavCurrentIndex = 0;
   List<Widget> _container = [
     new Beranda(),
@@ -24,6 +28,7 @@ class _homepageState extends State<homepage> {
     new Favorite(),
     new Profile()
   ];
+
 
   @override
   Widget build(BuildContext context) {

@@ -2,23 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:warungkuy_mobile/constans.dart';
 import 'package:warungkuy_mobile/model/menumakanan.dart';
-import 'package:warungkuy_mobile/model/resepf.dart';
-import 'package:warungkuy_mobile/users/cariwarung.dart';
-import 'package:warungkuy_mobile/users/favorite.dart';
 import 'package:warungkuy_mobile/users/katapengguna.dart';
 
 
 class DetailScreen extends StatelessWidget {
-  final wfavorite favorites;
-
-  DetailScreen({Key? key, required this.favorites}) : super(key: key);
+  //final wfavorite favorites;
+  //final Result
+ // DetailScreen({Key? key, required this.favorites}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
             child: Stack(children: [
-      Image.asset(favorites.image),
+     // Image.asset(favorites.image),
       Padding(
         padding: EdgeInsets.symmetric(vertical: 24, horizontal: 30),
         child:
@@ -29,13 +26,13 @@ class DetailScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.pop(context);
             
-                    
               },
               icon: Icon(Icons.arrow_back_ios, color: Colors.white),
             ),
           ),
           Text(
-            favorites.namef,
+           // favorites.namef,
+           "Ini teks",
             style: poppinsTextStyle.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.w600,
@@ -49,7 +46,7 @@ class DetailScreen extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 20.0),
           child: Text(
-            favorites.namef,
+            "Contoh Teks",
             style: poppinsTextStyle.copyWith(
                 color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
           ),
@@ -106,7 +103,7 @@ class DetailScreen extends StatelessWidget {
             ),
             SizedBox(width: 7.45),
             Text(
-              favorites.alamatf,
+             "Contoh Teks",
               style: poppinsTextStyle.copyWith(
                   color: Colors.black,
                   fontWeight: FontWeight.w300,
@@ -129,7 +126,8 @@ class DetailScreen extends StatelessWidget {
                   child: IconButton(
                     onPressed: () {
                       _launchInBrowser(Uri.parse(
-                        favorites.maps,
+                        //favorites.maps,
+                        "Contoh Teks"
                       ));
                     },
                     icon: Icon(Icons.public, size: 20, color: Colors.black),

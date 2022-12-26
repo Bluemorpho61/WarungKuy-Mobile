@@ -1,12 +1,134 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:warungkuy_mobile/main.dart';
-import 'package:warungkuy_mobile/home.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:warungkuy_mobile/fileKoneksi/api.dart';
+import 'package:warungkuy_mobile/model/profile_model.dart';
 
-import 'package:flutter/material.dart';
-import 'package:warungkuy_mobile/main.dart';
-import 'package:warungkuy_mobile/home.dart';
+class Profile extends StatefulWidget {
+  @override
+  State<Profile> createState() => _ProfileState();
+}
 
-class Profile extends StatelessWidget {
+class _ProfileState extends State<Profile> {
+  List userData = [];
+  bool loading = true;
+  XFile? image;
+  final ImagePicker picker = ImagePicker();
+  final TextEditingController _namaController = TextEditingController(),
+      _emailController = TextEditingController(),
+      _alamatController = TextEditingController();
+
+  @override
+  void dispose() {
+    _namaController;
+    _emailController;
+    _alamatController;
+    super.dispose();
+  }
+
+  
+
+  Future getImage(ImageSource src) async {
+    var img = await picker.pickImage(source: src);
+    setState(() {
+      image = img;
+    });
+  }
+
+  //TODO: Bikin method buat update profile
+  Future<bool> updateProfil() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var data = <String, dynamic>{};
+    data['id_user'] = pref.getString("id_user");
+    data['nama'] = _namaController.text;
+    data['email'] = _emailController.text;
+    data['alamat'] = _alamatController.text;
+    data['foto'] = image!.name;
+    var response = await http.post(Uri.parse(API.updateProfile), body: data);
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+      if (body['status'] == 'success') {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  Future<http.Response> getAPI() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var data = <String, dynamic>{};
+    data['id_user'] = pref.getString("id_user");
+    return http.post(Uri.parse(API.getUserProfile), body: data);
+  }
+
+  void showAlert() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            title: Text(
+                'Silahkan pilih gambar/foto yang ingin anda gunakan sebagai foto profil'),
+            content: Container(
+              height: MediaQuery.of(context).size.height / 6,
+              child: Column(
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        getImage(ImageSource.gallery);
+                      },
+                      child: Row(
+                        children: [
+                          Icon(Icons.image),
+                          Text('Dari Galeri'),
+                        ],
+                      )),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        getImage(ImageSource.camera);
+                      },
+                      child: Row(
+                        children: [Icon(Icons.camera), Text('From Camera')],
+                      ))
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  void DisplayData() async {
+    final response = await getAPI();
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+      setState(() {
+        for (var Ident in body) {
+          userData.add(ProfileModel.fromJson(Ident));
+        }
+      });
+
+      print("Data untuk Edit Profile yg sdh ditangkap");
+      print(userData.length);
+    }
+  }
+
+  @override
+  void initState() {
+    DisplayData();
+    getAPI();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,7 +145,7 @@ class Profile extends StatelessWidget {
                         color: Colors.black.withOpacity(0.5),
                         spreadRadius: 0,
                         blurRadius: 4,
-                        offset: Offset(1, 2   ), // changes position of shadow
+                        offset: Offset(1, 2), // changes position of shadow
                       ),
                     ],
                     // color: Colors.blue,
@@ -57,43 +179,50 @@ class Profile extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: CircleAvatar(
-                              radius: 50.0,
-                              backgroundImage:
-                              AssetImage('assets/img/polije.png'),
+                          image != null
+                              ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ClipRect(
+                                    child: Image.file(
+                                      File(image!.path),
+                                      fit: BoxFit.cover,
+                                      width: MediaQuery.of(context).size.width,
+                                    ),
+                                  ),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ClipRect(
+                                    child: Image.network(
+                                        '${API.getGambarWarung}/${userData[0].foto}'),
+                                  ),
+                                ),
+                          Container(
+                            height: 36,
+                            width: 140,
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                backgroundColor: Colors.greenAccent,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                              onPressed: () {
+                                showAlert();
+                              },
+                              child: Text(
+                                "Tambah/Edit Foto Profil",
+                                style: TextStyle(
+                                    color: Color(0xffffffff), fontSize: 15),
+                              ),
                             ),
-                          ),
-                          Text(
-                            'Moehammad Tegar',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 30.0,
-                              fontFamily: 'Pacifico',
-                              fontWeight: FontWeight.normal,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Text(
-                            'WarungKuy'.toString(),
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              fontFamily: 'SourceSansPro',
-                              color: Colors.teal.shade100,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 2.5,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
                           ),
                           Text(
                             'Edit Data'.toString(),
                             style: TextStyle(
                               fontSize: 15,
                               fontFamily: 'SourceSansPro',
-                              color: Colors.teal.shade100,
+                              color: Color.fromARGB(255, 22, 205, 190),
                               fontWeight: FontWeight.bold,
                               letterSpacing: 2.5,
                             ),
@@ -105,14 +234,14 @@ class Profile extends StatelessWidget {
                             height: 35,
                             width: 260,
                             child: TextField(
-                              // controller: usernameA,
+                              controller: _namaController,
                               decoration: InputDecoration(
-                                labelText: "Usename",
+                                labelText: "Nama User: " + userData[0].username,
                                 prefixIcon: Icon(Icons.person),
                                 fillColor: Colors.black,
                                 border: OutlineInputBorder(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
+                                        BorderRadius.all(Radius.circular(10))),
                               ),
                             ),
                           ),
@@ -123,32 +252,16 @@ class Profile extends StatelessWidget {
                             height: 35,
                             width: 260,
                             child: TextField(
-                              // controller: usernameA,
+                              controller:
+                                  _emailController, // controller: usernameA,
                               decoration: InputDecoration(
-                                labelText: "Phone",
-                                prefixIcon: Icon(Icons.phone),
-                                fillColor: Colors.black,
-                                border: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            height: 35,
-                            width: 260,
-                            child: TextField(
-                              // controller: usernameA,
-                              decoration: InputDecoration(
-                                labelText: "E-mail",
+                                labelText: "E-mail: " + userData[0].email,
+                                labelStyle: TextStyle(fontSize: 14),
                                 prefixIcon: Icon(Icons.mail),
                                 fillColor: Colors.black,
                                 border: OutlineInputBorder(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
+                                        BorderRadius.all(Radius.circular(10))),
                               ),
                             ),
                           ),
@@ -159,14 +272,14 @@ class Profile extends StatelessWidget {
                             height: 35,
                             width: 260,
                             child: TextField(
-                              // controller: usernameA,
+                              controller: _alamatController,
                               decoration: InputDecoration(
-                                labelText: "Alamat",
+                                labelText: "Alamat: " + userData[0].alamat,
                                 prefixIcon: Icon(Icons.home),
                                 fillColor: Colors.black,
                                 border: OutlineInputBorder(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
+                                        BorderRadius.all(Radius.circular(10))),
                               ),
                             ),
                           ),
@@ -183,9 +296,21 @@ class Profile extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                               ),
-                              onPressed: () {},
+                              onPressed: () async {
+                                try {
+                                  if (await updateProfil()) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text(
+                                                "Berhasil update profil")));
+                                  }
+                                } catch (e) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(e.toString())));
+                                }
+                              },
                               child: Text(
-                                "Save",
+                                "Simpan perubahan",
                                 style: TextStyle(
                                   color: Color(0xffffffff),
                                 ),

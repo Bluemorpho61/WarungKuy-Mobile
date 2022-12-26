@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var status = pref.getBool("isLogin");
     if (status == true) {
-      return Beranda();
+      return LandingPage();
     } else {
       return Login();
     }

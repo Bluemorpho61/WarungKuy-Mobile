@@ -11,7 +11,7 @@ class WarungModel {
   WarungModel.fromJson(Map<String, dynamic> json) {
     nama_warung = json['nama_warung'];
     alamat = json['alamat'];
-    rating = int.parse(json['rating']);
+    rating = double.parse(json['rating']).toInt();
     foto = json['foto'];
   }
 

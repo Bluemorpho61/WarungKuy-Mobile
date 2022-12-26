@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:warungkuy/constans.dart';
-import 'package:warungkuy/model/reviewUI.dart';
+import 'package:warungkuy_mobile/constans.dart';
+import 'package:warungkuy_mobile/model/reviewUI.dart';
 
 class Katapengguna extends StatefulWidget {
   @override
