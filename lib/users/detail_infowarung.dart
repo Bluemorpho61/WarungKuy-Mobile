@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:warungkuy_mobile/constans.dart';
 import 'package:warungkuy_mobile/model/menumakanan.dart';
 import 'package:warungkuy_mobile/users/katapengguna.dart';
 
-
 class DetailScreen extends StatelessWidget {
-  //final wfavorite favorites;
-  //final Result
- // DetailScreen({Key? key, required this.favorites}) : super(key: key);
+ 
+ 
+  // DetailScreen({Key? key, required this.favorites}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
             child: Stack(children: [
-     // Image.asset(favorites.image),
+      // Image.asset(favorites.image),
       Padding(
         padding: EdgeInsets.symmetric(vertical: 24, horizontal: 30),
         child:
@@ -25,14 +25,13 @@ class DetailScreen extends StatelessWidget {
             child: IconButton(
               onPressed: () {
                 Navigator.pop(context);
-            
               },
               icon: Icon(Icons.arrow_back_ios, color: Colors.white),
             ),
           ),
           Text(
-           // favorites.namef,
-           "Ini teks",
+            // favorites.namef,
+            "Ini teks",
             style: poppinsTextStyle.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.w600,
@@ -103,7 +102,7 @@ class DetailScreen extends StatelessWidget {
             ),
             SizedBox(width: 7.45),
             Text(
-             "Contoh Teks",
+              "Contoh Teks",
               style: poppinsTextStyle.copyWith(
                   color: Colors.black,
                   fontWeight: FontWeight.w300,
@@ -126,9 +125,8 @@ class DetailScreen extends StatelessWidget {
                   child: IconButton(
                     onPressed: () {
                       _launchInBrowser(Uri.parse(
-                        //favorites.maps,
-                        "Contoh Teks"
-                      ));
+                          //favorites.maps,
+                          "Contoh Teks"));
                     },
                     icon: Icon(Icons.public, size: 20, color: Colors.black),
                   ),
@@ -181,7 +179,7 @@ class DetailScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(16),
                       child: ClipRRect(
-                        child: Image.asset(
+                        child: Image.network(
                           menumakanans[index].imagef,
                           width: 81,
                           height: 68,
