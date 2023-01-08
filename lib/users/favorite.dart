@@ -76,10 +76,11 @@ class _FavoriteState extends State<Favorite> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DetailScreen()));
+                        null;
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => DetailScreen()));
                       },
                       child: Card(
                         child: Row(
@@ -87,13 +88,17 @@ class _FavoriteState extends State<Favorite> {
                             Padding(
                               padding: const EdgeInsets.all(16),
                               child: ClipRRect(
-                                  child: loading? Icon(Icons.storefront, size: 80,):
-                                  Image.network(
-                                '${API.getGambarWarung}/${daftarFavorit[index].foto}',
-                                fit: BoxFit.cover,
-                                width: 157,
-                                height: 94,
-                              )),
+                                  child: loading
+                                      ? Icon(
+                                          Icons.storefront,
+                                          size: 80,
+                                        )
+                                      : Image.network(
+                                          '${API.getGambarWarung}/${daftarFavorit[index].foto}',
+                                          fit: BoxFit.cover,
+                                          width: 157,
+                                          height: 94,
+                                        )),
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,

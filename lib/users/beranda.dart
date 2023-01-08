@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:warungkuy_mobile/constans.dart';
 import 'package:http/http.dart' as http;
@@ -176,11 +177,77 @@ class _BerandaState extends State<Beranda> {
                       scrollDirection: Axis.horizontal,
                       separatorBuilder: (context, _) => SizedBox(width: 10),
                       itemCount: warungs.length,
-                      itemBuilder: (context, index) => berandaCard(
-                          warungs[index].nama_warung,
-                          warungs[index].alamat,
-                          "${warungs[index].rating}/5",
-                          '${API.getGambarWarung}/${warungs[index].foto}'),
+                      // itemBuilder: (context, index) => berandaCard(
+                      //     warungs[index].nama_warung,
+                      //     warungs[index].alamat,
+                      //     "${warungs[index].rating}/5",
+                      //     '${API.getGambarWarung}/${warungs[index].foto}')),
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DetailScreen(
+                                      idWarung: warungs[index].id_warung))),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Card(
+                                elevation: 0.0,
+                                child: Image.network(
+                                  '${API.getGambarWarung}/${warungs[index].foto}',
+                                  fit: BoxFit.fill,
+                                  width: 142.55,
+                                  height: 83.0,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.asset(
+                                      'assets/store.png',
+                                      width: 142.55,
+                                      height: 83.0,
+                                    );
+                                  },
+                                ),
+                              ),
+                              Text(
+                                warungs[index].nama_warung,
+                                style: poppinsTextStyle.copyWith(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12.0),
+                              ),
+                              SizedBox(
+                                height: 1.0,
+                              ),
+                              SizedBox(
+                                width: 240,
+                                child: Text(
+                                  warungs[index].alamat,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: poppinsTextStyle.copyWith(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10.0),
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                                  SizedBox(width: 7.45),
+                                  Text("${warungs[index].rating}/5",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w300,
+                                          fontSize: 12.0)),
+                                ],
+                              )
+                            ],
+                          ),
+                        );
+                      },
                     ),
                   )
                 ],
@@ -233,88 +300,78 @@ class _BerandaState extends State<Beranda> {
     );
   }
 
-  Widget berandaCard(
-    String berandaName,
-    String alamat,
-    String rate,
-    String imgPath,
-  ) {
-    return InkWell(
-      onTap: () {
-        //TODO: BIKIN METHOD FETCH DATA UTK WARUNG
-        Future<bool> _fetchDataForInfoWarung() async {
-          var response = await http.get(Uri.parse(API.getWarung));
-          if (response.statusCode == 200) {
-            var data = json.decode(response.body);
-            var rest = data['data'] as List;
-            // warungs = rest.map<Warung>((json) => Warung.fromJson(json)).toList();
-            return true;
-          } else {
-            return false;
-          }
-        }
-
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context)=>DetailScreen())
-            );
-      },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Card(
-            elevation: 0.0,
-            child: Image.network(
-              imgPath,
-              fit: BoxFit.fill,
-              width: 142.55,
-              height: 83.0,
-              errorBuilder: (context, error, stackTrace) {
-                return Image.asset('assets/store.png',width: 142.55,height: 83.0,);
-              },
-            ),
-          ),
-          Text(
-            berandaName,
-            style: poppinsTextStyle.copyWith(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 12.0),
-          ),
-          SizedBox(
-            height: 1.0,
-          ),
-          SizedBox(
-            width: 240,
-            child: Text(
-              alamat,
-              overflow: TextOverflow.ellipsis,
-              style: poppinsTextStyle.copyWith(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w300,
-                  fontSize: 10.0),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Icon(
-                Icons.star,
-                color: Colors.amber,
-              ),
-              SizedBox(width: 7.45),
-              Text(
-                rate,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w300,
-                    fontSize: 12.0),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget berandaCard(
+  //   String berandaName,
+  //   String alamat,
+  //   String rate,
+  //   String imgPath,
+  // ) {
+  //   return InkWell(
+  //     onTap: () {
+  //       Navigator.push(
+  //           context, MaterialPageRoute(builder: (context) => DetailScreen()));
+  //     },
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         Card(
+  //           elevation: 0.0,
+  //           child: Image.network(
+  //             imgPath,
+  //             fit: BoxFit.fill,
+  //             width: 142.55,
+  //             height: 83.0,
+  //             errorBuilder: (context, error, stackTrace) {
+  //               return Image.asset(
+  //                 'assets/store.png',
+  //                 width: 142.55,
+  //                 height: 83.0,
+  //               );
+  //             },
+  //           ),
+  //         ),
+  //         Text(
+  //           berandaName,
+  //           style: poppinsTextStyle.copyWith(
+  //               color: Colors.black,
+  //               fontWeight: FontWeight.bold,
+  //               fontSize: 12.0),
+  //         ),
+  //         SizedBox(
+  //           height: 1.0,
+  //         ),
+  //         SizedBox(
+  //           width: 240,
+  //           child: Text(
+  //             alamat,
+  //             overflow: TextOverflow.ellipsis,
+  //             style: poppinsTextStyle.copyWith(
+  //                 color: Colors.black,
+  //                 fontWeight: FontWeight.w300,
+  //                 fontSize: 10.0),
+  //           ),
+  //         ),
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.start,
+  //           children: [
+  //             Icon(
+  //               Icons.star,
+  //               color: Colors.amber,
+  //             ),
+  //             SizedBox(width: 7.45),
+  //             Text(
+  //               rate,
+  //               style: TextStyle(
+  //                   color: Colors.black,
+  //                   fontWeight: FontWeight.w300,
+  //                   fontSize: 12.0),
+  //             ),
+  //           ],
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }
 
 Widget berandaKomen(

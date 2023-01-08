@@ -1,14 +1,54 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:warungkuy_mobile/constans.dart';
+import 'package:warungkuy_mobile/fileKoneksi/api.dart';
+import 'package:warungkuy_mobile/model/detailinfo_warung_model.dart';
 import 'package:warungkuy_mobile/model/menumakanan.dart';
+import 'package:warungkuy_mobile/model/warung_model.dart';
 import 'package:warungkuy_mobile/users/katapengguna.dart';
 
-class DetailScreen extends StatelessWidget {
- 
- 
-  // DetailScreen({Key? key, required this.favorites}) : super(key: key);
+class DetailScreen extends StatefulWidget {
+  final int idWarung;
+  DetailScreen({super.key, required this.idWarung});
+
+  @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  List dataDetail = [];
+  Future<http.Response> fetchData() {
+    var data = <String, dynamic>{};
+    data['id'] = widget.idWarung;
+    return http.post(Uri.parse(API.getDetailWarung), body: data);
+  }
+
+  void getData() async {
+    final response = await fetchData();
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+      setState(() {
+        for (var detail in body) {
+          dataDetail.add(DetailInfoWModel.fromJson(detail));
+        }
+        print(dataDetail.length);
+      });
+    } else {
+      print("Error");
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    fetchData();
+    getData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +71,7 @@ class DetailScreen extends StatelessWidget {
           ),
           Text(
             // favorites.namef,
-            "Ini teks",
+            dataDetail[1].namaWarung,
             style: poppinsTextStyle.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.w600,

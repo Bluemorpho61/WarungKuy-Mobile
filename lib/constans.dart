@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:warungkuy/model/reviewModal.dart';
+import 'package:warungkuy_mobile/model/reviewModal.dart';
 
 class Palette {
   static Color bg1 = Color.fromRGBO(12, 82, 127, 1);
